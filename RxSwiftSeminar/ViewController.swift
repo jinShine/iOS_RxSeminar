@@ -24,6 +24,8 @@ class ViewController: UIViewController {
     behaviorSubject()
     replaySubject()
     asyncSubject()
+
+    switchLatest()
   }
 }
 
@@ -111,5 +113,51 @@ extension ViewController {
     subject.onNext(2)
     subject.onNext(3)
     subject.onCompleted()
+  }
+}
+
+// MARK: - Combining
+
+/*
+ 1. switchLatest
+  : 주로 옵저버블의 형태를 방출할때 사용하며, 가장 최근의 옵저버블이 방출하는 이벤트를 전달한다.
+ */
+
+extension ViewController {
+
+  func switchLatest() {
+    print("\n--------------[ SwitchLatest ]---------------\n")
+
+    let subject1 = PublishSubject<String>()
+    let subject2 = PublishSubject<String>()
+
+    // Observable의 String을 방출하는 Observable
+    let source = PublishSubject<Observable<String>>()
+
+    source
+      .switchLatest()
+      .subscribe(onNext: {
+        print($0)
+      }).disposed(by: disposeBag)
+
+    source.onNext(subject1) // subject1을 구독하겠다.
+
+    subject1.onNext("1")
+    subject1.onNext("2")
+    subject2.onNext("3")
+    subject2.onNext("4")
+
+    // subject1을 구독하였으므로 1, 2가 방출 된다.
+
+    source.onNext(subject2) // subject2을 구독하겠다.
+
+    subject1.onNext("100")
+    subject1.onNext("200")
+    subject2.onNext("300")
+    subject2.onNext("400")
+
+    // subject2을 구독하였으므로 300, 400이 방출 된다.
+
+    source.onCompleted()
   }
 }
