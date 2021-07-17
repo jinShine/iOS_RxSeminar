@@ -32,6 +32,7 @@ class ViewController: UIViewController {
     generate()
     repeatElement()
     deferred()
+    create()
 
     switchLatest()
   }
@@ -146,6 +147,8 @@ extension ViewController {
  7. deferred
   : 특정 조건에 따라 옵저버블을 생성할 수 있다.
   : 옵저버블 방출
+ 8. create
+  : 옵저버블을 직접 생성하는 방법
  */
 
 extension ViewController {
@@ -272,6 +275,30 @@ extension ViewController {
     Observable<[String]>.deferred {
       isType.toggle()
       return isType ? Observable.just(animals) : Observable.just([])
+    }
+    .subscribe(onNext: {
+      print($0)
+    }).disposed(by: disposeBag)
+  }
+
+  func create() {
+    print("\n--------------[ Create ]---------------\n")
+
+    Observable<String>.create { observer in
+      guard let url = URL(string: "https://www.apple.co") else {
+        observer.onError(MyError.error)
+        return Disposables.create()
+      }
+
+      guard let html = try? String(contentsOf: url, encoding: .utf8) else {
+        observer.onError(MyError.error)
+        return Disposables.create()
+      }
+
+      observer.onNext(html)
+      observer.onCompleted()
+
+      return Disposables.create()
     }
     .subscribe(onNext: {
       print($0)
