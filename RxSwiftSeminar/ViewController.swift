@@ -29,6 +29,7 @@ class ViewController: UIViewController {
     of()
     from()
     range()
+    generate()
 
     switchLatest()
   }
@@ -133,6 +134,11 @@ extension ViewController {
  4. range
   : 정수를 지정된 수만큼 방출 ( start -> count )
   : 증가되는 수를 바꾸거나 감소하는 시퀀스는 하지 못한다.
+ 5. generate
+  : range에서 하지 못했던 condition, iterate 조건으로 지정된 수를 조작할 수 있다.
+  : initialState -> 초기값
+  : condition -> 조건 (true 조건, false 조건이면 종료됨)
+  : iterate -> 값을 바꾸는 코드
  */
 
 extension ViewController {
@@ -182,6 +188,41 @@ extension ViewController {
       .subscribe(onNext: {
         print($0)
       }).disposed(by: disposeBag)
+  }
+
+  func generate() {
+    print("\n--------------[ Generate ]---------------\n")
+
+    // 꼭 정수를 입력해야 한다.
+    Observable.generate(
+      initialState: 0, // 초기값
+      condition: { $0 <= 10 }, // true 조건을 입력, false일 경우 종료됨.
+      iterate: { $0 + 2 } // 값을 바꾸는 코드 (예를 들어 값의 증가, 감소 등)
+    )
+    .subscribe(onNext: {
+      print($0)
+    }).disposed(by: disposeBag)
+
+    Observable.generate(
+      initialState: 10,
+      condition: { $0 >= 0 },
+      iterate: { $0 - 2 }
+    )
+    .subscribe(onNext: {
+      print($0)
+    }).disposed(by: disposeBag)
+
+    let smile = "😄"
+    let angry = "😡"
+
+    Observable.generate(
+      initialState: smile,
+      condition: { $0.count < 10 },
+      iterate: { $0.count.isMultiple(of: 2) ? $0 + smile : $0 + angry }
+    )
+    .subscribe(onNext: {
+      print($0)
+    }).disposed(by: disposeBag)
   }
 }
 
