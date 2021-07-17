@@ -122,13 +122,23 @@ extension ViewController {
 
 /*
  1. just
-  :
+  : 파라미터의 element를 그대로 방출
  */
 
 extension ViewController {
 
   func just() {
+    print("\n--------------[ Just ]---------------\n")
 
+    Observable.just(1)
+      .subscribe(onNext: {
+        print($0) // 1
+      }).disposed(by: disposeBag)
+
+    Observable.just([1, 2, 3])
+      .subscribe(onNext: {
+        print($0) // [1, 2, 3]
+      }).disposed(by: disposeBag)
   }
 }
 
