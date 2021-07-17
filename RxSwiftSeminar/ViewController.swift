@@ -28,6 +28,7 @@ class ViewController: UIViewController {
     just()
     of()
     from()
+    range()
 
     switchLatest()
   }
@@ -129,6 +130,9 @@ extension ViewController {
   : 가변 파라미터로, just처럼 하나의 element가 아닌 여러 element를 방출
  3. from
   : 배열을 파라미터로 받으며, 배열 요소 하나하나를 접근해서 element를 방출
+ 4. range
+  : 정수를 지정된 수만큼 방출 ( start -> count )
+  : 증가되는 수를 바꾸거나 감소하는 시퀀스는 하지 못한다.
  */
 
 extension ViewController {
@@ -148,6 +152,8 @@ extension ViewController {
   }
 
   func of() {
+    print("\n--------------[ Of ]---------------\n")
+
     Observable.of("apple", "kiwi")
       .subscribe(onNext: {
         print($0)
@@ -160,7 +166,19 @@ extension ViewController {
   }
 
   func from() {
+    print("\n--------------[ From ]---------------\n")
+
     Observable.from([1, 2, 3])
+      .subscribe(onNext: {
+        print($0)
+      }).disposed(by: disposeBag)
+  }
+
+  func range() {
+    print("\n--------------[ Range ]---------------\n")
+
+    // 꼭 정수를 입력해야 한다.
+    Observable.range(start: 1, count: 5)
       .subscribe(onNext: {
         print($0)
       }).disposed(by: disposeBag)
