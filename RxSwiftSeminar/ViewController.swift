@@ -27,6 +27,7 @@ class ViewController: UIViewController {
 
     just()
     of()
+    from()
 
     switchLatest()
   }
@@ -126,6 +127,8 @@ extension ViewController {
   : 하나의 파라미터 element를 그대로 방출
  2. of
   : 가변 파라미터로, just처럼 하나의 element가 아닌 여러 element를 방출
+ 3. from
+  : 배열을 파라미터로 받으며, 배열 요소 하나하나를 접근해서 element를 방출
  */
 
 extension ViewController {
@@ -151,6 +154,13 @@ extension ViewController {
       }).disposed(by: disposeBag)
 
     Observable.of([1, 2], [2, 3])
+      .subscribe(onNext: {
+        print($0)
+      }).disposed(by: disposeBag)
+  }
+
+  func from() {
+    Observable.from([1, 2, 3])
       .subscribe(onNext: {
         print($0)
       }).disposed(by: disposeBag)
