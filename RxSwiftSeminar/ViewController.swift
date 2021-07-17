@@ -26,6 +26,7 @@ class ViewController: UIViewController {
     asyncSubject()
 
     just()
+    of()
 
     switchLatest()
   }
@@ -122,7 +123,9 @@ extension ViewController {
 
 /*
  1. just
-  : 파라미터의 element를 그대로 방출
+  : 하나의 파라미터 element를 그대로 방출
+ 2. of
+  : 가변 파라미터로, just처럼 하나의 element가 아닌 여러 element를 방출
  */
 
 extension ViewController {
@@ -138,6 +141,18 @@ extension ViewController {
     Observable.just([1, 2, 3])
       .subscribe(onNext: {
         print($0) // [1, 2, 3]
+      }).disposed(by: disposeBag)
+  }
+
+  func of() {
+    Observable.of("apple", "kiwi")
+      .subscribe(onNext: {
+        print($0)
+      }).disposed(by: disposeBag)
+
+    Observable.of([1, 2], [2, 3])
+      .subscribe(onNext: {
+        print($0)
       }).disposed(by: disposeBag)
   }
 }
