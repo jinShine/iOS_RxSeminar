@@ -30,6 +30,7 @@ class ViewController: UIViewController {
     from()
     range()
     generate()
+    repeatElement()
 
     switchLatest()
   }
@@ -139,6 +140,8 @@ extension ViewController {
   : initialState -> 초기값
   : condition -> 조건 (true 조건, false 조건이면 종료됨)
   : iterate -> 값을 바꾸는 코드
+ 6. repeatElement
+  : 동일한 요소를 반복적으로 방출
  */
 
 extension ViewController {
@@ -223,6 +226,18 @@ extension ViewController {
     .subscribe(onNext: {
       print($0)
     }).disposed(by: disposeBag)
+  }
+
+  func repeatElement() {
+    print("\n--------------[ RepeatElement ]---------------\n")
+
+    // 동일한 코드를 반복해서 실행하기 때문에 무한루프에 걸리게 된다.
+    // 그래서 제한 조건을 꼭 설정 해야된다.
+    Observable.repeatElement("😍")
+      .take(3)
+      .subscribe(onNext: {
+        print($0)
+      }).disposed(by: disposeBag)
   }
 }
 
