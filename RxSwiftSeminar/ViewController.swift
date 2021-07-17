@@ -152,8 +152,10 @@ extension ViewController {
  8. create
   : 옵저버블을 직접 생성하는 방법
  9. empty
-  : 어떠한 element를 방출하지 않고, completed만 방출하고 끝
+  : next element를 방출하지 않고, completed만 방출하고 끝
   : 옵저버가 아무런 동작을 안하고 종료해야할때 주로 사용.
+ 10 error
+  : next element를 방출하지 않고, error만 방출하고 끝
  */
 
 extension ViewController {
@@ -316,13 +318,18 @@ extension ViewController {
     Observable.empty()
       .debug()
       .subscribe(onNext: {
-        print($0) // Completed만 방출
+        print($0) // Completed만 방출되며 종료
       }).disposed(by: disposeBag)
   }
 
   func error() {
     print("\n--------------[ Error ]---------------\n")
 
+    Observable.error(MyError.error)
+      .debug()
+      .subscribe(onNext: {
+        print($0) // Error만 방출되며 종료
+      }).disposed(by: disposeBag)
   }
 }
 
