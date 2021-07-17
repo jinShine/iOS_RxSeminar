@@ -25,6 +25,8 @@ class ViewController: UIViewController {
     replaySubject()
     asyncSubject()
 
+    just()
+
     switchLatest()
   }
 }
@@ -113,6 +115,20 @@ extension ViewController {
     subject.onNext(2)
     subject.onNext(3)
     subject.onCompleted()
+  }
+}
+
+// MARK: - Create Operators
+
+/*
+ 1. just
+  :
+ */
+
+extension ViewController {
+
+  func just() {
+
   }
 }
 
