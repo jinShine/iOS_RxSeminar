@@ -31,6 +31,7 @@ class ViewController: UIViewController {
     range()
     generate()
     repeatElement()
+    deferred()
 
     switchLatest()
   }
@@ -142,6 +143,9 @@ extension ViewController {
   : iterate -> 값을 바꾸는 코드
  6. repeatElement
   : 동일한 요소를 반복적으로 방출
+ 7. deferred
+  : 특정 조건에 따라 옵저버블을 생성할 수 있다.
+  : 옵저버블 방출
  */
 
 extension ViewController {
@@ -238,6 +242,40 @@ extension ViewController {
       .subscribe(onNext: {
         print($0)
       }).disposed(by: disposeBag)
+  }
+
+  func deferred() {
+    print("\n--------------[ Deferred ]---------------\n")
+
+    let person1 = "SeungJin"
+    let person2 = "jinShine"
+    var flag = true
+
+    let factory = Observable<String>.deferred {
+      flag.toggle()
+
+      if flag {
+        return Observable<String>.just(person1)
+      } else {
+        return Observable<String>.just(person2)
+      }
+    }
+
+    factory
+      .subscribe(onNext: {
+        print($0)
+      }).disposed(by: disposeBag)
+
+    let animals = ["🐶", "🐭", "🐱", "🐨", "🐯"]
+    var isType = false
+
+    Observable<[String]>.deferred {
+      isType.toggle()
+      return isType ? Observable.just(animals) : Observable.just([])
+    }
+    .subscribe(onNext: {
+      print($0)
+    }).disposed(by: disposeBag)
   }
 }
 
