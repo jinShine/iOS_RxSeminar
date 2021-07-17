@@ -33,6 +33,8 @@ class ViewController: UIViewController {
     repeatElement()
     deferred()
     create()
+    empty()
+    error()
 
     switchLatest()
   }
@@ -149,6 +151,9 @@ extension ViewController {
   : 옵저버블 방출
  8. create
   : 옵저버블을 직접 생성하는 방법
+ 9. empty
+  : 어떠한 element를 방출하지 않고, completed만 방출하고 끝
+  : 옵저버가 아무런 동작을 안하고 종료해야할때 주로 사용.
  */
 
 extension ViewController {
@@ -303,6 +308,21 @@ extension ViewController {
     .subscribe(onNext: {
       print($0)
     }).disposed(by: disposeBag)
+  }
+
+  func empty() {
+    print("\n--------------[ Empty ]---------------\n")
+
+    Observable.empty()
+      .debug()
+      .subscribe(onNext: {
+        print($0) // Completed만 방출
+      }).disposed(by: disposeBag)
+  }
+
+  func error() {
+    print("\n--------------[ Error ]---------------\n")
+
   }
 }
 
