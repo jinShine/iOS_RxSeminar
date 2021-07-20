@@ -1,2 +1,2 @@
 # iOS_RxSeminar
-RxSwift 정리
+RxSwift operator 정리
