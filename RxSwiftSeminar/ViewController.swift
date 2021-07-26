@@ -45,12 +45,15 @@ class ViewController: UIViewController {
 /*
  1. PublishSubject
   : subscribe된 시점 이후 부터 발생한 이벤트를 전달한다.
+
  2. BehaviorSubject
   : publish와 비슷하지만, 초기값을 가진다.
+
  3. ReplaySubject
   : create 메서드를 생성
   : n개의 이벤트를 저장하고 있다가 subscribe된 시점과 상관없이 버퍼의 마지막 이벤트를 전달한다.
   : 마지막 값이 중요할때 사용
+
  4. AsyncSubject
   : Complete 될때까지 이벤트는 발생되지 않고, Complete가 되면 마지막 이벤트는 발생하고 종료
  */
@@ -132,28 +135,37 @@ extension ViewController {
 /*
  1. just
   : 하나의 파라미터 element를 그대로 방출
+
  2. of
   : 가변 파라미터로, just처럼 하나의 element가 아닌 여러 element를 방출
+
  3. from
   : 배열을 파라미터로 받으며, 배열 요소 하나하나를 접근해서 element를 방출
+
  4. range
   : 정수를 지정된 수만큼 방출 ( start -> count )
   : 증가되는 수를 바꾸거나 감소하는 시퀀스는 하지 못한다.
+
  5. generate
   : range에서 하지 못했던 condition, iterate 조건으로 지정된 수를 조작할 수 있다.
   : initialState -> 초기값
   : condition -> 조건 (true 조건, false 조건이면 종료됨)
   : iterate -> 값을 바꾸는 코드
+
  6. repeatElement
   : 동일한 요소를 반복적으로 방출
+
  7. deferred
   : 특정 조건에 따라 옵저버블을 생성할 수 있다.
   : 옵저버블 방출
+
  8. create
   : 옵저버블을 직접 생성하는 방법
+
  9. empty
   : next element를 방출하지 않고, completed만 방출하고 끝
   : 옵저버가 아무런 동작을 안하고 종료해야할때 주로 사용.
+
  10 error
   : next element를 방출하지 않고, error만 방출하고 끝
  */
