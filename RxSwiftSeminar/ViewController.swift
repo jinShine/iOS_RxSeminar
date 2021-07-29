@@ -36,6 +36,8 @@ class ViewController: UIViewController {
     empty()
     error()
 
+    ignoreElements()
+
     switchLatest()
   }
 }
@@ -342,6 +344,20 @@ extension ViewController {
       .subscribe(onNext: {
         print($0) // Error만 방출되며 종료
       }).disposed(by: disposeBag)
+  }
+}
+
+// MARK: - Filtering Operators
+
+/*
+ 1. ignoreElements
+  : 하나의 파라미터 element를 그대로 방출
+ */
+
+extension ViewController {
+
+  func ignoreElements() {
+
   }
 }
 
