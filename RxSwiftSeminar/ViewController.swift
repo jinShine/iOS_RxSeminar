@@ -351,14 +351,24 @@ extension ViewController {
 
 /*
  1. ignoreElements
-  : 하나의 파라미터 element를 그대로 방출
+  : Observable<Never>를 방출하여 이후 스트림은 실행 안된다.
  */
 
 extension ViewController {
 
   func ignoreElements() {
+    print("\n--------------[ IgnoreElements ]---------------\n")
 
+    let intList = [1,2,3,4,5,6]
+
+    Observable.from(intList)
+      .ignoreElements()
+      .subscribe(onNext: {
+        print("#", $0) // Never를 던져서 실행 print가 나오지 않는다.
+      }).disposed(by: disposeBag)
   }
+
+  
 }
 
 // MARK: - Combining
