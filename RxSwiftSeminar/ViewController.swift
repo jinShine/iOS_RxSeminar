@@ -37,6 +37,7 @@ class ViewController: UIViewController {
     error()
 
     ignoreElements()
+    element()
 
     switchLatest()
   }
@@ -352,6 +353,9 @@ extension ViewController {
 /*
  1. ignoreElements
   : Observable<Never>를 방출하여 이후 스트림은 실행 안된다.
+
+ 2. element
+  : 해당 index 아이템만 전달하고 Completed를 전달한다.
  */
 
 extension ViewController {
@@ -368,7 +372,18 @@ extension ViewController {
       }).disposed(by: disposeBag)
   }
 
-  
+  func element() {
+    print("\n--------------[ Element ]---------------\n")
+
+    let intList = [1,2,3,4,5,6]
+
+    Observable.from(intList)
+      .element(at: 2)
+      .subscribe(onNext: {
+        print($0)
+      })
+      .disposed(by: disposeBag)
+  }
 }
 
 // MARK: - Combining
