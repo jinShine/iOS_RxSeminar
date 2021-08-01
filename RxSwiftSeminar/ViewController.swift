@@ -39,8 +39,11 @@ class ViewController: UIViewController {
     ignoreElements()
     element()
     filter()
+    skip()
+    skipWhile()
+    skipUntil()
 
-    switchLatest()
+//    switchLatest()
   }
 }
 
@@ -360,6 +363,18 @@ extension ViewController {
 
  3. filter
   : 시퀀스의 요소를 필터링합니다.
+
+ 4. skip
+  : 지정된 수 만큼 무시하고 이후에 방출되는 요소만 전달한다.
+
+ 5. skipWhile
+  : 클로저를 파라미터로 받으며,
+  : ture를 리턴하는 동안 방출되는 요소를 무시한다.
+  : false를 리턴하게되면 그때부터 조건에 관계없이 모든 요소를 방출하게 된다.
+
+ 6. skipUntil
+  : 옵저버블을 파라미터로 받으며,
+  : 옵저버블이 next 이벤트를 전달하기 전까지 무시하게된다.
  */
 
 extension ViewController {
@@ -399,6 +414,47 @@ extension ViewController {
       .subscribe(onNext: {
         print($0)
       }).disposed(by: disposeBag)
+  }
+
+  func skip() {
+    print("\n--------------[ Skip ]---------------\n")
+
+    let intList = [1,2,3,4,5,6]
+
+    Observable.from(intList)
+      .skip(3)
+      .subscribe(onNext: {
+        print($0)
+      }).disposed(by: disposeBag)
+  }
+
+  func skipWhile() {
+    print("\n--------------[ SkipWhile ]---------------\n")
+
+    let intList = [1,2,3,4,5,6]
+
+    Observable.from(intList)
+      .skip(while: { $0 == 1 }) // 2,3,4,5,6
+      //.skip(while: { $0 == 3 }) // 1,2,3,4,5,6
+      .subscribe(onNext: {
+        print($0)
+      }).disposed(by: disposeBag)
+  }
+
+  func skipUntil() {
+    print("\n--------------[ SkipUntil ]---------------\n")
+
+    let intSubject = PublishSubject<Int>()
+    let trigger = PublishSubject<Int>()
+
+    intSubject.skip(until: trigger)
+      .subscribe(onNext: {
+        print($0) // 2
+      }).disposed(by: disposeBag)
+
+    intSubject.onNext(1)
+    trigger.onNext(1)
+    intSubject.onNext(2)
   }
 }
 
