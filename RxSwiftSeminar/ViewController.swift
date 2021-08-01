@@ -38,6 +38,7 @@ class ViewController: UIViewController {
 
     ignoreElements()
     element()
+    filter()
 
     switchLatest()
   }
@@ -356,6 +357,9 @@ extension ViewController {
 
  2. element
   : 해당 index 아이템만 전달하고 Completed를 전달한다.
+
+ 3. filter
+  : 시퀀스의 요소를 필터링합니다.
  */
 
 extension ViewController {
@@ -383,6 +387,18 @@ extension ViewController {
         print($0)
       })
       .disposed(by: disposeBag)
+  }
+
+  func filter() {
+    print("\n--------------[ Filter ]---------------\n")
+
+    let intList = [1,2,3,4,5,6]
+
+    Observable.from(intList)
+      .filter { $0.isMultiple(of: 2) }
+      .subscribe(onNext: {
+        print($0)
+      }).disposed(by: disposeBag)
   }
 }
 
