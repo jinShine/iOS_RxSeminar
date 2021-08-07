@@ -42,6 +42,7 @@ class ViewController: UIViewController {
     skip()
     skipWhile()
     skipUntil()
+    take()
 
 //    switchLatest()
   }
@@ -375,6 +376,9 @@ extension ViewController {
  6. skipUntil
   : 옵저버블을 파라미터로 받으며,
   : 옵저버블이 next 이벤트를 전달하기 전까지 무시하게된다.
+
+ 7. take
+  : 정수를 파라미터로 받아서 해당 숫자 만큼만 요소를 방출한다.
  */
 
 extension ViewController {
@@ -455,6 +459,18 @@ extension ViewController {
     intSubject.onNext(1)
     trigger.onNext(1)
     intSubject.onNext(2)
+  }
+
+  func take() {
+    print("\n--------------[ Take ]---------------\n")
+
+    let intList = [1,2,3,4,5,6]
+
+    Observable.from(intList)
+      .take(2)
+      .subscribe(onNext: {
+        print($0) // 1, 2
+      }).disposed(by: disposeBag)
   }
 }
 
