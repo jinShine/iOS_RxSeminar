@@ -43,6 +43,7 @@ class ViewController: UIViewController {
     skipWhile()
     skipUntil()
     take()
+    takeWhile()
 
 //    switchLatest()
   }
@@ -379,6 +380,12 @@ extension ViewController {
 
  7. take
   : 정수를 파라미터로 받아서 해당 숫자 만큼만 요소를 방출한다.
+
+ 8. takeWhile
+  : 클로저를 파라미터로 받으며,
+  : true를 리턴하는 동안 요소를 방출하게 된다.
+  : false를 리턴하게 되면 그때부터 조건에 관계 없이 모든 요소를 무시한다.
+  : 첫 요소부터 false면 모든 요소를 더이상 방출하지 않는다.
  */
 
 extension ViewController {
@@ -470,6 +477,18 @@ extension ViewController {
       .take(2)
       .subscribe(onNext: {
         print($0) // 1, 2
+      }).disposed(by: disposeBag)
+  }
+
+  func takeWhile() {
+    print("\n--------------[ TakeWhile ]---------------\n")
+
+    let intList = [1,2,3,4,5,6]
+
+    Observable.from(intList)
+      .take(while: { !$0.isMultiple(of: 2) })
+      .subscribe(onNext: {
+        print($0) // 1
       }).disposed(by: disposeBag)
   }
 }
