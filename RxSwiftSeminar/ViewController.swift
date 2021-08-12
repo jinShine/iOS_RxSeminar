@@ -44,6 +44,7 @@ class ViewController: UIViewController {
     skipUntil()
     take()
     takeWhile()
+    takeUntil()
 
 //    switchLatest()
   }
@@ -386,6 +387,10 @@ extension ViewController {
   : true를 리턴하는 동안 요소를 방출하게 된다.
   : false를 리턴하게 되면 그때부터 조건에 관계 없이 모든 요소를 무시한다.
   : 첫 요소부터 false면 모든 요소를 더이상 방출하지 않는다.
+
+ 9. takeWhile
+  : 옵저버블을 파라미터로 받으며,
+  : 옵저버블이 next 이벤트를 전달하기 전까지 방출하게된다.
  */
 
 extension ViewController {
@@ -494,6 +499,22 @@ extension ViewController {
 
   func takeUntil() {
     print("\n--------------[ TakeUntil ]---------------\n")
+
+    let intSubject = PublishSubject<Int>()
+    let trigger = PublishSubject<Int>()
+
+    intSubject.take(until: trigger)
+      .subscribe(onNext: {
+        print($0) // 1, 2, 3
+      }).disposed(by: disposeBag)
+
+    intSubject.onNext(1)
+    intSubject.onNext(2)
+    intSubject.onNext(3)
+
+    trigger.onNext(4)
+
+    intSubject.onNext(5)
   }
 }
 
