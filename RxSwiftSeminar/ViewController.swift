@@ -491,6 +491,10 @@ extension ViewController {
         print($0) // 1
       }).disposed(by: disposeBag)
   }
+
+  func takeUntil() {
+    print("\n--------------[ TakeUntil ]---------------\n")
+  }
 }
 
 // MARK: - Combining
