@@ -45,6 +45,7 @@ class ViewController: UIViewController {
     take()
     takeWhile()
     takeUntil()
+    takeLast()
 
 //    switchLatest()
   }
@@ -391,6 +392,10 @@ extension ViewController {
  9. takeWhile
   : 옵저버블을 파라미터로 받으며,
   : 옵저버블이 next 이벤트를 전달하기 전까지 방출하게된다.
+
+ 10. takeLast
+  : 방출된 요소들중 마지막 n번째의 요소들을 방출한다.
+  : 즉, 끝에서부터 몇번재까지 방출할지 결정한다.
  */
 
 extension ViewController {
@@ -515,6 +520,18 @@ extension ViewController {
     trigger.onNext(4)
 
     intSubject.onNext(5)
+  }
+
+  func takeLast() {
+    print("\n--------------[ TakeLast ]---------------\n")
+
+    let intList = [1,2,3,4,5,6]
+
+    Observable.from(intList)
+      .takeLast(2)
+      .subscribe(onNext: {
+        print($0) // 5, 6
+      }).disposed(by: disposeBag)
   }
 }
 
