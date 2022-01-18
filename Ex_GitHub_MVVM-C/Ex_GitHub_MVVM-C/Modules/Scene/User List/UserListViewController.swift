@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class UserListViewController: ViewController, ViewType {
 
@@ -15,10 +17,13 @@ final class UserListViewController: ViewController, ViewType {
 
   // MARK: - UI Properties
 
+  let tableview = UITableView(frame: .zero, style: .grouped)
+
   // MARK: - Properties
 
   let viewModel: UserListViewModel
   let navigator: Navigator
+  let disposeBag = DisposeBag()
 
   // MARK: - Initialize
 
@@ -36,17 +41,21 @@ final class UserListViewController: ViewController, ViewType {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
   }
 
   // MARK: - Setup
 
   override func setupUI() {
+    view.addSubview(tableview)
     super.setupUI()
   }
 
   override func setupConstraints() {
     super.setupConstraints()
+
+    tableview.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
   }
 
   // MARK: - Binding methods

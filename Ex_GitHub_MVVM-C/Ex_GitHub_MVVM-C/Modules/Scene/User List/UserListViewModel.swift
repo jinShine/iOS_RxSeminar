@@ -5,8 +5,9 @@
 //  Created by buzz on 2022/01/14.
 //
 
-import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
 
 struct UserListViewModel: ViewModelType {
 
@@ -17,6 +18,5 @@ struct UserListViewModel: ViewModelType {
   // MARK: - Initialize && Binding
 
   init() {
-
   }
 }
