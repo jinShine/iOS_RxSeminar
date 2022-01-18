@@ -10,7 +10,7 @@ import RxCocoa
 
 protocol UserInteractorable {
 
-  func fetchUserList(since: Int) -> Observable<[User]>
+  func fetchUserList(page: Int) -> Observable<[User]>
 }
 
 final class UserInteractor: UserInteractorable {
@@ -21,7 +21,7 @@ final class UserInteractor: UserInteractorable {
     self.githubNetowrk = githubNetwork
   }
 
-  func fetchUserList(since: Int) -> Observable<[User]> {
-    githubNetowrk.request(to: .userList(since: since), decode: [User].self).asObservable()
+  func fetchUserList(page: Int) -> Observable<[User]> {
+    githubNetowrk.request(to: .userList(since: page), decode: [User].self).asObservable()
   }
 }

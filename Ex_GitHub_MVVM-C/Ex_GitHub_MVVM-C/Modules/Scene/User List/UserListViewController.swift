@@ -14,7 +14,6 @@ final class UserListViewController: ViewController, ViewType {
   // MARK: - Constant
 
   typealias DataSource = UITableViewDiffableDataSource<Section, User>
-  typealias Snapshot = NSDiffableDataSourceSnapshot<Section, User>
 
   private enum Metric {}
 
@@ -33,7 +32,6 @@ final class UserListViewController: ViewController, ViewType {
   let navigator: Navigator
   let disposeBag = DisposeBag()
   lazy var datasource = createDataSource()
-  lazy var snapshot = Snapshot()
 
   // MARK: - Initialize
 
@@ -76,6 +74,7 @@ final class UserListViewController: ViewController, ViewType {
   private func setupTableView() {
     tableView.delegate = self
     tableView.dataSource = datasource
+    tableView.refreshControl = UIRefreshControl()
     tableView.rowHeight = App.TableView.rowHeight
     tableView.register(UserInfoTableViewCell.nib(), forCellReuseIdentifier: UserInfoTableViewCell.reuseIdentifier)
   }
@@ -88,13 +87,25 @@ final class UserListViewController: ViewController, ViewType {
     rx.viewWillAppear.mapToVoid()
       .bind(to: viewModel.viewWillAppear)
       .disposed(by: disposeBag)
+
+    tableView.rx.prefetchRows
+      .compactMap { $0.last }
+      .map { indexPath in (indexPath, self.datasource.snapshot().itemIdentifiers) }
+      .bind(to: viewModel.prefetchRows)
+      .disposed(by: disposeBag)
+
+    tableView.refreshControl?.rx.controlEvent(.valueChanged)
+      .bind(to: viewModel.didPullToRefresh)
+      .disposed(by: disposeBag)
   }
 
   override func outputBinding() {
     super.outputBinding()
 
     viewModel.isLoading
-      .drive(indicatorView.rx.isAnimating)
+      .drive(onNext: { [weak self] in
+        self?.showLoading($0)
+      })
       .disposed(by: disposeBag)
 
     viewModel.fetchUserList
@@ -106,7 +117,17 @@ final class UserListViewController: ViewController, ViewType {
 
 // MARK: - Helper methods
 
-extension UserListViewController {}
+extension UserListViewController {
+
+  private func showLoading(_ isLoading: Bool) {
+    if !isLoading {
+      indicatorView.stopAnimating()
+      tableView.refreshControl?.endRefreshing()
+    } else if !tableView.refreshControl!.isRefreshing {
+      indicatorView.startAnimating()
+    }
+  }
+}
 
 extension UserListViewController: UITableViewDelegate {
 
@@ -127,12 +148,14 @@ extension UserListViewController: UITableViewDelegate {
   }
 
   private func updateSnaptshot(items: [User]) {
-    defer {
-      datasource.apply(snapshot, animatingDifferences: false)
+    var snapshot = datasource.snapshot()
+
+    if snapshot.sectionIdentifiers.isEmpty {
+      snapshot.appendSections([.main])
     }
 
-    snapshot.appendSections([.main])
     snapshot.appendItems(items)
+    datasource.apply(snapshot, animatingDifferences: false)
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
