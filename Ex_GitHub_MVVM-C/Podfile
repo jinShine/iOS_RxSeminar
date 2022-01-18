@@ -16,6 +16,7 @@ target 'Ex_GitHub_MVVM-C' do
 
   # ui
   pod 'SnapKit'
+  pod 'Kingfisher'
 
   # util
   pod 'Then'
