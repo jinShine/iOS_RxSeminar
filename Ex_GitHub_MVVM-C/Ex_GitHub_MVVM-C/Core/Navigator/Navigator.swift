@@ -20,10 +20,14 @@ protocol Navigatable {
 
 class Navigator: Navigatable {
 
+  private let githubNetwork = NetworkService<GitHubRouter>()
+
   func get(for scene: Scene) -> UIViewController {
+    
     switch scene {
     case .userList:
-      let viewModel = UserListViewModel()
+      let interactor = UserInteractor(githubNetwork: githubNetwork)
+      let viewModel = UserListViewModel(userInteractor: interactor)
       return UserListViewController(viewModel: viewModel, navigator: self)
     }
   }

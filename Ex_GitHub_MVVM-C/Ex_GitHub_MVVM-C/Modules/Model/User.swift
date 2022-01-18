@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct User: Decodable {
+struct User: Hashable, Decodable {
+  let uuid = UUID()
   var id: Int = 0
   var name: String = ""
   var profile: String = ""
