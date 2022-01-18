@@ -1,20 +1,20 @@
 //
-//  Router.swift
+//  GitHubRouter.swift
 //  Ex_GitHub_MVVM-C
 //
-//  Created by buzz on 2022/01/14.
+//  Created by buzz on 2022/01/19.
 //
 
 import Alamofire
 import Moya
 
-enum Router {
+enum GitHubRouter {
   case userList(since: Int)
 //  case userDetail(name: String)
 //  case userRepo(name: String, page: Int)
 }
 
-extension Router: TargetType {
+extension GitHubRouter: TargetType {
 
   // Github Key
   static let clientID: String = "075f9bae947051708b29"
@@ -64,8 +64,8 @@ extension Router: TargetType {
     case let .userList(since):
       return .requestParameters(parameters: [
         "since" : since,
-        "client_id" : Router.clientID,
-        "client_secret" : Router.clientSecret
+        "client_id" : GitHubRouter.clientID,
+        "client_secret" : GitHubRouter.clientSecret
       ], encoding: URLEncoding.default)
     }
   }
@@ -74,3 +74,4 @@ extension Router: TargetType {
     return [:]
   }
 }
+

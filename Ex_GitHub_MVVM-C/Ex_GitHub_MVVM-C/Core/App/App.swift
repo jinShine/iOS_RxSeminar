@@ -23,9 +23,11 @@ final class App: NSObject {
   var window: UIWindow?
   var windowScene: UIWindowScene?
   let navigator: Navigator
+  let githubNetwork: NetworkService<GitHubRouter>
 
   private override init() {
     self.navigator = Navigator()
+    self.githubNetwork = NetworkService<GitHubRouter>()
     super.init()
   }
 
