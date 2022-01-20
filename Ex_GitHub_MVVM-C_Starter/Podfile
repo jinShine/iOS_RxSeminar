@@ -1,0 +1,24 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'Ex_GitHub_MVVM-C' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for Ex_GitHub_MVVM-C
+
+  # rx
+  pod 'RxSwift'
+  pod 'RxCocoa'
+  pod 'Moya/RxSwift'
+  pod 'RxViewController'
+  pod 'RxGesture'
+
+  # ui
+  pod 'SnapKit'
+  pod 'Kingfisher'
+
+  # util
+  pod 'Then'
+
+end

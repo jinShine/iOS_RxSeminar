@@ -119,6 +119,15 @@ extension ViewController {
          print("#2", $0)
        }).disposed(by: disposeBag)
      */
+
+    let ddd = Observable.just(1)
+      .subscribe(onNext: {
+        print("##", $0)
+      })
+
+    let testSubject = PublishSubject<Void>()
+
+
   }
 }
 
