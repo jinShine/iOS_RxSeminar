@@ -20,6 +20,7 @@ struct UserListViewModel: ViewModelType {
   // MARK: - Output
 
   let isLoading: Driver<Bool>
+  let showAlert: Driver<String>
   let fetchUserList: Driver<[User]>
 
   // MARK: - Initialize && Binding
@@ -30,6 +31,9 @@ struct UserListViewModel: ViewModelType {
 
     let onLoading = PublishRelay<Bool>()
     isLoading = onLoading.asDriverOnErrorJustComplete()
+
+    let onError = PublishSubject<Error>()
+    showAlert = onError.map { $0.localizedDescription }.asDriverOnErrorJustComplete()
 
     let loadMore = prefetchRows
       .filter { $0.indexPath.row + 1 == $0.users.count }
@@ -42,7 +46,13 @@ struct UserListViewModel: ViewModelType {
       .do(onNext: { _ in onLoading.accept(true) })
       .observe(on: ConcurrentDispatchQueueScheduler(qos: .default))
       .map { perPage += size }
-      .flatMapLatest { userInteractor.fetchUserList(page: perPage) }
+      .flatMapLatest {
+        userInteractor.fetchUserList(page: perPage)
+          .catch { error in
+            onError.onNext(error)
+            return .empty()
+          }
+      }
       .do(onNext: { _ in onLoading.accept(false) })
       .map { $0 }
       .asDriverOnErrorJustComplete()

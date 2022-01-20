@@ -108,6 +108,11 @@ final class UserListViewController: ViewController, ViewType {
       })
       .disposed(by: disposeBag)
 
+    viewModel.showAlert
+      .drive(onNext: { [weak self] in
+        self?.showAlert(title: "에러", message: $0)
+      }).disposed(by: disposeBag)
+
     viewModel.fetchUserList
       .drive(onNext: { [weak self] in
         self?.updateSnaptshot(items: $0)
@@ -126,6 +131,13 @@ extension UserListViewController {
     } else if !tableView.refreshControl!.isRefreshing {
       indicatorView.startAnimating()
     }
+  }
+
+  private func showAlert(title: String, message: String) {
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    let alertAction = UIAlertAction(title: "확인", style: .default)
+    alertController.addAction(alertAction)
+    present(alertController, animated: true)
   }
 }
 
