@@ -110,7 +110,7 @@ final class UserListViewController: ViewController, ViewType {
 
     viewModel.showAlert
       .drive(onNext: { [weak self] in
-        self?.showAlert(title: "에러", message: $0)
+        self?.showAlert(title: $0.title, message: $0.message)
       }).disposed(by: disposeBag)
 
     viewModel.fetchUserList
@@ -172,5 +172,8 @@ extension UserListViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
+
+    let item = datasource.snapshot().itemIdentifiers[indexPath.row]
+    viewModel.didTapCell.onNext(item)
   }
 }

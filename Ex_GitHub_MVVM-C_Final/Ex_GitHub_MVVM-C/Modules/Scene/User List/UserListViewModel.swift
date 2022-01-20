@@ -16,11 +16,12 @@ struct UserListViewModel: ViewModelType {
   let viewWillAppear = PublishSubject<Void>()
   let prefetchRows = PublishSubject<(indexPath: IndexPath, users: [User])>()
   let didPullToRefresh = PublishSubject<Void>()
+  let didTapCell = PublishSubject<User>()
 
   // MARK: - Output
 
   let isLoading: Driver<Bool>
-  let showAlert: Driver<String>
+  let showAlert: Driver<(title: String, message: String)>
   let fetchUserList: Driver<[User]>
 
   // MARK: - Initialize && Binding
@@ -33,7 +34,11 @@ struct UserListViewModel: ViewModelType {
     isLoading = onLoading.asDriverOnErrorJustComplete()
 
     let onError = PublishSubject<Error>()
-    showAlert = onError.map { $0.localizedDescription }.asDriverOnErrorJustComplete()
+    showAlert = Observable.merge(
+      onError.map { ("에러", $0.localizedDescription) },
+      didTapCell.map { ("알림", $0.name) }
+    )
+    .asDriverOnErrorJustComplete()
 
     let loadMore = prefetchRows
       .filter { $0.indexPath.row + 1 == $0.users.count }
